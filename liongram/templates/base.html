@@ -15,17 +15,22 @@
     <div>
         <nav>
             <ul class="bottom-menu-group">
-                <li>
-                    <img src="{% static 'icons/home_outlined_black_36dp.svg' %}" alt="홈">
-                </li>
+                <a href="{% url 'index' %}">
+                    <li>
+                        <img src="{% static 'icons/home_outlined_black_36dp.svg' %}" alt="홈">
+                    </li>
+                </a>
+                
                 <li>
                     <img src="{% static 'icons/search_outlined_black_36dp.svg' %}" alt="검색"/>
                 </li>
-                <li>
-                    
-                    <img src="{% static 'icons/add_box_outlined_black_36dp.svg' %}" alt="글쓰기"/>
-                    
-                </li>
+
+                <a href="{% url 'posts:post-create' %}">
+                    <li>
+                        <img src="{% static 'icons/add_box_outlined_black_36dp.svg' %}" alt="글쓰기"/>
+                    </li>
+                </a>
+
                 <li>
                     <img src="{% static 'icons/favorite_outlined_black_36dp.svg' %}" alt="좋아요"/>
                 </li>
@@ -35,5 +40,14 @@
             </ul>
         </nav>
     </div>
-</body>
+    {% if request.user.is_authenticated %}
+        <div>
+            {{ user.username }}님 환영합니다. 
+        </div>
+        <a href="{% url 'accounts:logout' %}">로그아웃</a>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">로그인</a>
+        <a href="{% url 'accounts:signup' %}">회원가입</a>
+    {% endif %}
+    </body>
 </html>

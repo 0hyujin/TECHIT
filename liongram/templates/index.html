@@ -4,9 +4,11 @@
 {% block title %}홈{% endblock %}
 
 {% block content %}
+{% for post in post_list %}
 <main>
     <div class="card-list">
             {% include 'mixin/posts/post_card.html' with detail=False %}
     </div>
 </main>
+{% endfor %}
 {% endblock %}

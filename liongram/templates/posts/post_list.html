@@ -3,4 +3,13 @@
 
 {% block content %}
 <h1>Post 목록 화면</h1>
+{% for post in post_list %}
+    <div>
+        {{ post.image }}<br>
+        {{ post.content }}<br>
+        {{ post.created_at }}<br>
+        {{ post.view_count }}<br>
+        {{ post.writer }}<br>
+    </div>
+{% endfor %}
 {% endblock %}

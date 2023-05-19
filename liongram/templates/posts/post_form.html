@@ -3,4 +3,27 @@
 
 {% block content %}
 <h1>Post 입력 화면</h1>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <label for = "imageID">이미지</label>
+        {% if post.image %}
+            <p>현재: <a href = "{{post.image.url}}">{{post.image}}</a></p>
+            <p>변경: <input type="file" name="image" accept="image/" id="imageID"></p>
+        {% else %}
+            <input type="file" name="image" accept="image/" id="imageID">
+        {% endif %}
+    </div>
+    <div>
+        <label for = "contentID">내용</label>
+        <textarea name="content" id="contentID" cols="30" rows="10">
+            {% if post %}
+                {{post.content}}
+            {% endif %}
+        </textarea>
+    </div>
+    <div>
+        <input type="submit">
+    </div>
+</form>
 {% endblock %}

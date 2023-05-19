@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}회원가입{% endblock %}
+{% block title %}글 입력{% endblock %}
 
 {% block content %}
-<h1>회원가입</h1>
+<h1>Post 입력 화면 - Form 사용</h1>
 <form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+    {% csrf_token %}    
     <div>
-        {{ form.as_ul }}
-    
+        {{ form.as_p }}
+    </div>
     <div>
         <input type="submit">
     </div>
