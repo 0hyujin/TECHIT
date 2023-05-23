@@ -13,7 +13,6 @@ def signup_view(request):
         #POST 요청 시 데이터 확인 후 회원 생성
         form = SignUpForm(request.POST)
         
-
         if form.is_valid():
             #회원가입 처리
             instance = form.save()
@@ -23,6 +22,7 @@ def signup_view(request):
             return redirect('accounts:signup')
 
 def login_view(request):
+    # GET, POST 분리
     if request.method == 'GET':
         # 로그인 HTML 응답
         return render(request, 'accounts/login.html', {'form':AuthenticationForm()})
@@ -31,16 +31,19 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             # 비즈니스 로직 처리 - 로그인 처리
-            login(request, form.user_cache) # 비즈니스 로직 처리
+            login(request, form.user_cache)
             # 응답
             return redirect('index')
         else:
+            # 비즈니스 로직 처리 - 로그인 실패
+            # 응답
             return render(request, 'accounts/login.html', {'form':form})
         
 def logout_view(request):
     # 로그인일때
+    # 데이터 유효성 검사
     if request.user.is_authenticated:
         # 비즈니스 로직 처리 - 로그아웃
         logout(request)
-        # 응답
+    # 응답
     return redirect('index')
