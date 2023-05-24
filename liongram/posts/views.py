@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 import accounts
 
 
-from .forms import PostBaseForm, PostCreateForm
+from .forms import PostBaseForm, PostCreateForm, PostDetailForm
 from .models import Post
 
 
@@ -28,25 +28,31 @@ def post_list_view(request):
     return render(request, 'posts/post_list.html', context)
 
 def post_detail_view(request, id):
-    # post = Post.objects.get(id=id)
-    # context = {
-    #     'post' :post
-    # }
-    # return render(request, 'posts/post_detail.html', context)
+    try:
+        post = Post.objects.get(id=id)
+        if not request.user.is_authenticated:
+            return redirect('/accounts/login')
+    except Post.DoesNotExist:
+        return redirect('index')
+    context = {
+        'post' : post,
+        'form' : PostDetailForm(),
+    }
+    return render(request, 'posts/post_detail.html', context)
     ###########################
-    if request.method == 'GET':
-        # 로그인 HTML 응답
-        return render(request, 'accounts/login.html', {'form':AuthenticationForm()})
-    else:
-        # 데이터 유효성 검사
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            # 비즈니스 로직 처리 - 로그인 처리
-            login(request, form.user_cache) # 비즈니스 로직 처리
-            # 응답
-            return redirect('index')
-        else:
-            return render(request, 'accounts/login.html', {'form':form})
+    # if request.method == 'GET':
+    #     # 로그인 HTML 응답 
+    #     return render(request, 'accounts/login.html', {'form':AuthenticationForm()})
+    # else:
+    #     # 데이터 유효성 검사
+    #     form = AuthenticationForm(request, data=request.POST)
+    #     if form.is_valid():
+    #         # 비즈니스 로직 처리 - 로그인 처리
+    #         login(request, form.user_cache) # 비즈니스 로직 처리
+    #         # 응답
+    #         return redirect('index')
+    #     else:
+    #         return render(request, 'accounts/login.html', {'form':form})
         
 @login_required
 def post_create_view(request):
