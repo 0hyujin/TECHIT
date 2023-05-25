@@ -29,17 +29,18 @@ def post_list_view(request):
 
 
 def post_detail_view(request,id):
-    if request.user.is_authenticated: # 사용자가 인증되어있으면 = 로그인 되있으면
-        try:
-            post = Post.objects.get(id=id) #id에 해당하는 게시물 검색
-        except Post.DoesNotExist: #예외발생
-            return redirect('index')
-        context = {
-            'post':post
-        }
-        return render(request, 'posts/post_detail.html',context)
-    else: #사용자 인증이 되어있지 않으면 = 로그인 안되어있으면
-        return redirect('/accounts/login')
+    if request.method == 'GET':
+        if request.user.is_authenticated: # 사용자가 인증되어있으면 = 로그인 되있으면
+            try:
+                post = Post.objects.get(id=id) #id에 해당하는 게시물 검색
+            except Post.DoesNotExist: #예외발생
+                return redirect('index')
+            context = {
+                'post':post
+            }
+            return render(request, 'posts/post_detail.html',context)
+        else: #사용자 인증이 되어있지 않으면 = 로그인 안되어있으면
+            return redirect('/accounts/login')
     ###########################
     # post = Post.objects.get(id=id)
     # context = {
