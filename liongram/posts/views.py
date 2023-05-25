@@ -27,32 +27,25 @@ def post_list_view(request):
     }
     return render(request, 'posts/post_list.html', context)
 
-def post_detail_view(request, id):
-    try:
-        post = Post.objects.get(id=id)
-        if not request.user.is_authenticated:
-            return redirect('/accounts/login')
-    except Post.DoesNotExist:
-        return redirect('index')
-    context = {
-        'post' : post,
-        'form' : PostDetailForm(),
-    }
-    return render(request, 'posts/post_detail.html', context)
+
+def post_detail_view(request,id):
+    if request.user.is_authenticated: # 사용자가 인증되어있으면 = 로그인 되있으면
+        try:
+            post = Post.objects.get(id=id) #id에 해당하는 게시물 검색
+        except Post.DoesNotExist: #예외발생
+            return redirect('index')
+        context = {
+            'post':post
+        }
+        return render(request, 'posts/post_detail.html',context)
+    else: #사용자 인증이 되어있지 않으면 = 로그인 안되어있으면
+        return redirect('/accounts/login')
     ###########################
-    # if request.method == 'GET':
-    #     # 로그인 HTML 응답 
-    #     return render(request, 'accounts/login.html', {'form':AuthenticationForm()})
-    # else:
-    #     # 데이터 유효성 검사
-    #     form = AuthenticationForm(request, data=request.POST)
-    #     if form.is_valid():
-    #         # 비즈니스 로직 처리 - 로그인 처리
-    #         login(request, form.user_cache) # 비즈니스 로직 처리
-    #         # 응답
-    #         return redirect('index')
-    #     else:
-    #         return render(request, 'accounts/login.html', {'form':form})
+    # post = Post.objects.get(id=id)
+    # context = {
+    #     'post' :post
+    # }
+    # return render(request, 'posts/post_detail.html', context)
         
 @login_required
 def post_create_view(request):
