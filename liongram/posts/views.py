@@ -64,7 +64,7 @@ def post_create_view(request):
 
 def post_create_form_view(request):
     if request.method == 'GET':
-        form = PostCreateForm()
+        form = PostBaseForm()
         context = {'form': form}
         return render(request, 'posts/post_form2.html', context)
     else:
